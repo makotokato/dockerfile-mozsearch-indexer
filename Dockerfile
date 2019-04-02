@@ -82,6 +82,15 @@ RUN apt-get install -y nodejs
 
 RUN apt-get clean
 
+# Install SpiderMonkey
+RUN wget -nv https://index.taskcluster.net/v1/task/gecko.v2.mozilla-central.nightly.latest.firefox.linux64-opt/artifacts/public/build/target.jsshell.zip
+RUN mkdir js
+RUN cd js && \
+    unzip ../target.jsshell.zip && \
+    install js /usr/local/bin && \
+    install *.so /usr/local/lib && \
+    ldconfig
+
 # Install Rust. We need rust nightly to use the save-analysis
 ENV USER mozsearch
 ENV HOME /home/${USER}
