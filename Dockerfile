@@ -113,6 +113,16 @@ RUN git checkout ${CINNABAR_REVISION}
 RUN ./git-cinnabar download
 WORKDIR /work
 
+# Install SpiderMonkey
+RUN wget -nv https://index.taskcluster.net/v1/task/gecko.v2.mozilla-central.nightly.latest.firefox.linux64-opt/artifacts/public/build/target.jsshell.zip
+RUN mkdir js
+WORKDIR /work/js
+RUN unzip ../target.jsshell.zip && \
+    install js /usr/local/bin && \
+    install *.so /usr/local/lib && \
+    ldconfig
+WORKDIR /work
+
 RUN apt-get clean
 
 ENV SHELL=/bin/bash
